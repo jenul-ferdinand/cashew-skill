@@ -1,4 +1,6 @@
-# Cashew Agent Skill
+<p align="center">
+  <img alt="Cashew Agent Skill" src=".github/banner.png" />
+</p>
 
 Tell your AI agent what you spent, and it lands in [Cashew](https://github.com/jameskokoska/Cashew), the open-source budgeting app.
 
