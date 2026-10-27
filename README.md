@@ -42,7 +42,7 @@ You need an Android phone with Cashew and [Termux from F-Droid](https://f-droid.
    ```sh
    npx skills add jenul-ferdinand/cashew-skill -g
    ```
-4. Tell the agent your Cashew category names. Or export a backup (More → Settings & Customization → Import & Export Data → Export Cashew Data File) and let it read them. It keeps them in a local, gitignored `profile.md`.
+4. Tell the agent your Cashew category names. Or export a backup (More → Settings & Customization → Import & Export Data → Export Cashew Data File) and let it read them. It keeps them in `~/.config/cashew-skill/profile.md`.
 
 Without SSH, `cashew.py --link` prints a link you can tap on the phone instead.
 
