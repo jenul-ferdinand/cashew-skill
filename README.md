@@ -1,6 +1,4 @@
-<p align="center">
-  <img alt="Cashew Agent Skill" src=".github/banner.png" />
-</p>
+![Cashew Agent Skill](.github/banner.png)
 
 Tell your AI agent what you spent, and it lands in [Cashew](https://github.com/jameskokoska/Cashew), the open-source budgeting app.
 
@@ -41,6 +39,10 @@ You need an Android phone with Cashew and [Termux from F-Droid](https://f-droid.
 3. Install the skill:
    ```sh
    npx skills add jenul-ferdinand/cashew-skill -g
+   ```
+   Or, in Claude Code, as a plugin:
+   ```
+   /plugin install cashew-skill --marketplace jenul-ferdinand/skills
    ```
 4. Tell the agent your Cashew category names. Or export a backup (More → Settings & Customization → Import & Export Data → Export Cashew Data File) and let it read them. It keeps them in `~/.config/cashew-skill/profile.md`.
 

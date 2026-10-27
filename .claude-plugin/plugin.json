@@ -1,0 +1,13 @@
+{
+  "name": "cashew-skill",
+  "displayName": "Cashew Budget Logger (unofficial)",
+  "description": "Log expenses and income into the Cashew budgeting app on Android from plain text or bank statements. Queues transactions on your phone over SSH to Termux.",
+  "author": {
+    "name": "Jenul Ferdinand",
+    "url": "https://github.com/jenul-ferdinand"
+  },
+  "homepage": "https://github.com/jenul-ferdinand/cashew-skill",
+  "repository": "https://github.com/jenul-ferdinand/cashew-skill",
+  "license": "MIT",
+  "keywords": ["cashew", "budgeting", "personal-finance", "expenses", "termux"]
+}
