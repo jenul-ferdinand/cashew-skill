@@ -42,7 +42,7 @@ You need an Android phone with Cashew and [Termux from F-Droid](https://f-droid.
    ```
    Or, in Claude Code, as a plugin:
    ```
-   /plugin install cashew-skill --marketplace jenul-ferdinand/agent-skills
+   /plugin install cashew-skill --marketplace jenul-ferdinand/skills
    ```
 4. Tell the agent your Cashew category names. Or export a backup (More → Settings & Customization → Import & Export Data → Export Cashew Data File) and let it read them. It keeps them in `~/.config/cashew-skill/profile.md`.
 
