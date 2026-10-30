@@ -34,6 +34,16 @@ If ssh fails, the phone may be off the network, its IP may have changed, or sshd
 
 There is no live read access. Ask for a backup: More → Settings & Customization → Import & Export Data → Export Cashew Data File, saved to Downloads. Copy it with `scp <host>:/storage/emulated/0/Download/<file> .` and open it with Python's `sqlite3`. It's the app's raw SQLite DB, with tables `categories`, `wallets` (accounts) and `transactions`. Use it to fill the profile, find where logging stopped, and avoid duplicates.
 
+- Open it read-only: `sqlite3.connect(f"file:{path}?mode=ro", uri=True)`. Check `PRAGMA table_info(<table>)` before using any other column.
+- `transactions`: `name` (the title), `amount` (negative = expense), `note`, `wallet_fk` → `wallets.wallet_pk`, `category_fk` → `categories.category_pk`, `sub_category_fk`, `date_created`, `paid`, `type`, `paired_transaction_fk`.
+- `categories`: `name`, `income` (1 on income categories), `main_category_pk` (NULL on main categories, set on subcategories), `archived`.
+- `wallets`: `name`, `currency`, `archived`.
+- `wallets` and `categories` each have an `order` column. Quote it as `"order"`.
+- `date_created` is unix seconds. Convert it to dates in the phone's timezone: SQLite's `'unixepoch'` and `strftime('%s', 'YYYY-MM-DD')` use UTC, which shifts month boundaries by the UTC offset.
+- An account's balance is the sum of `amount` over its rows where `paid` isn't 0. Rows with `paid` 0 haven't happened yet.
+- Rows with `type` 1 come from a subscription. Their amount is the subscription's set price, which can lag the real charge.
+- Category `'0'` is Balance Correction, and Cashew stores transfers there too. A transfer is two rows, one with a `paired_transaction_fk` pointing at the other. A category-`'0'` row belongs to a transfer if it has a `paired_transaction_fk` or another row's points at it. The rest are balance corrections. Don't classify by note text: some corrections have an empty note.
+
 ## Bank statements
 
 For a PDF statement, run `pdftotext -layout` and turn the rows into transactions. Skip transfers between the user's own accounts. Confirm, then send in one batch.
