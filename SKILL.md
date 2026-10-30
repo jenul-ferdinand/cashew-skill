@@ -35,7 +35,7 @@ If ssh fails, the phone may be off the network, its IP may have changed, or sshd
 There is no live read access. Ask for a backup: More → Settings & Customization → Import & Export Data → Export Cashew Data File, saved to Downloads. Copy it with `scp <host>:/storage/emulated/0/Download/<file> .` and open it with Python's `sqlite3`. It's the app's raw SQLite DB, with tables `categories`, `wallets` (accounts) and `transactions`. Use it to fill the profile, find where logging stopped, and avoid duplicates.
 
 - Open it read-only: `sqlite3.connect(f"file:{path}?mode=ro", uri=True)`. Check `PRAGMA table_info(<table>)` before using any other column.
-- `transactions`: `name` (the title), `amount` (negative = expense), `note`, `wallet_fk` → `wallets.wallet_pk`, `category_fk` → `categories.category_pk`, `sub_category_fk`, `date_created`, `paid`, `type`, `paired_transaction_fk`.
+- `transactions`: `transaction_pk`, `name` (the title), `amount` (negative = expense), `note`, `wallet_fk` → `wallets.wallet_pk`, `category_fk` and `sub_category_fk` → `categories.category_pk`, `date_created`, `paid`, `type`, `paired_transaction_fk` → `transactions.transaction_pk`.
 - `categories`: `name`, `income` (1 on income categories), `main_category_pk` (NULL on main categories, set on subcategories), `archived`.
 - `wallets`: `name`, `currency`, `archived`.
 - `wallets` and `categories` each have an `order` column. Quote it as `"order"`.
