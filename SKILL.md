@@ -9,7 +9,20 @@ description: Log expenses and income into the Cashew budgeting app (Android) fro
 
 ## Before logging
 
-Read `~/.config/cashew-skill/profile.md`. It holds the user's exact category and account names, currency, bank, and habits. If it's missing, build it from a backup (see Reading data) or ask the user, then save it there. It lives outside the skill folder so updates don't wipe it.
+Read `~/.config/cashew-skill/profile.md`. It lives outside the skill folder so updates don't wipe it. It holds durable facts:
+
+- currency
+- the phone's timezone (backups store unix timestamps)
+- exact account names
+- exact category and subcategory names
+- the bank and what its statements look like
+- whether Cashew's notification or email scanning is on (it adds transactions by itself, so duplicates are likely)
+- the subscriptions Cashew tracks
+- the date the records are reconciled through
+
+Keep progress notes, counts, and to-do items out of it. They go stale, and a later session may act on them.
+
+If a quick log needs a name the profile lacks, ask the user and save the answer to the profile. Don't wait for them to export a backup: backups are for history (finding duplicates, reconciling). Each time you open a backup, refresh the profile's account, category, and subcategory names from it.
 
 ## Logging
 
