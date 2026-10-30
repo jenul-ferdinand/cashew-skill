@@ -9,7 +9,7 @@ description: Log expenses and income into the Cashew budgeting app (Android) fro
 
 ## Before logging
 
-Read `~/.config/cashew-skill/profile.md`. It lives outside the skill folder so updates don't wipe it. It holds durable facts:
+Read `~/.config/cashew-skill/profile.md`, or create it if it's missing. It lives outside the skill folder so updates don't wipe it. It holds durable facts:
 
 - currency
 - the phone's timezone (backups store unix timestamps)
