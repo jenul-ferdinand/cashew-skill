@@ -48,7 +48,18 @@ There is no live read access. Ask for a backup: More → Settings & Customizatio
 
 ## Bank statements
 
-For a PDF statement, run `pdftotext -layout` and turn the rows into transactions. Skip transfers between the user's own accounts. Confirm, then send in one batch.
+1. Run `pdftotext -layout` on each PDF and parse the text, reusing any parser the profile names. Save a new parser next to the profile in `~/.config/cashew-skill/` and name it in the profile.
+2. Check the parse: each statement's opening balance plus its rows equals its closing balance, and each closing balance equals the opening balance of that account's next statement.
+3. Ask for a fresh backup (see Reading data). Match each statement row to a Cashew row with the same amount within a few days. If a statement shows both a transaction date and a posting date, use the transaction date for matching and for new rows.
+4. Before calling a row missing, rule these out:
+   - A subscription row at an outdated price covers its bank charge. Don't add the charge. Tell the user to fix the subscription's price and its rows since the change.
+   - One Cashew row can be the sum of several statement rows, such as a night out logged once or two incoming payments logged together.
+   - A failed payment and its reversal cancel out. Add both or neither.
+5. Skip money the user moved between their own bank accounts if both belong to the same Cashew account. Otherwise log it as a transfer (see Logging).
+6. Give each new row the title and category the user used before for the same merchant. Ask about merchants you can't place.
+7. Balance corrections the user made while not logging count the same money twice once you add the missing rows. List them for the user to delete.
+8. Confirm, then send.
+9. Once the user has opened Cashew and made those changes, ask for a fresh backup. On each statement's end date, compare the Cashew account's balance with the bank's, adding up bank accounts that share a Cashew account. Allow for purchases dated on or before that day that the bank posted later. Any other gap points to a missing or doubled row, or a batch that never arrived. Once every statement matches, update the reconciled-through date in the profile.
 
 ## Docs
 
