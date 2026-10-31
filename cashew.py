@@ -7,7 +7,6 @@ stdin: a JSON list, amount < 0 for expenses and > 0 for income, e.g.
     "category": "Dining"}]
 A row with "to" is a transfer from "account" (amount > 0, no category), e.g.
   {"date": "2026-10-21", "amount": 200, "account": "Everyday", "to": "Savings"}
-Cashew opens each transfer pre-filled for the user to save with a tap.
 
   cashew.py          send to the phone (ssh host $CASHEW_SSH_HOST or "phone")
   cashew.py --link   print app links to tap on the phone instead (no ssh)

@@ -19,7 +19,7 @@ Read `~/.config/cashew-skill/profile.md`. It holds the user's exact category and
    - `title`: merchant or short label
    - `category`: an exact name from the profile. A miss makes Cashew prompt on open (older versions drop the transaction).
    - optional `subcategory`, `notes`, `account` (exact names)
-   - Money moved between two of the user's Cashew accounts is a transfer. Give it `account` (from), `to`, a positive `amount` and an optional `title`, but no category. Don't log it as an expense plus an income.
+   - Money moved between two of the user's Cashew accounts is a transfer. Give it `account` (from), `to`, a positive `amount` and an optional `title`, but no category.
 2. Show them as a short table and get a yes before sending.
 3. Send:
    ```sh
