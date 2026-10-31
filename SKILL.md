@@ -36,6 +36,15 @@ If ssh fails, the phone may be off the network, its IP may have changed, or sshd
 
 There is no live read access. Ask for a backup: More → Settings & Customization → Import & Export Data → Export Cashew Data File, saved to Downloads. Copy it with `scp <host>:/storage/emulated/0/Download/<file> .` and open it with Python's `sqlite3`. It's the app's raw SQLite DB, with tables `categories`, `wallets` (accounts) and `transactions`. Use it to fill the profile, find where logging stopped, and avoid duplicates.
 
+- Open it read-only: `sqlite3.connect(f"file:{path}?mode=ro", uri=True)`.
+- `transactions`: `transaction_pk`, `name` (the title), `amount` (negative = expense), `note`, `wallet_fk` → `wallets.wallet_pk`, `category_fk` and `sub_category_fk` → `categories.category_pk`, `date_created`, `paid`, `type`, `paired_transaction_fk` → `transactions.transaction_pk`.
+- `categories`: `name`, `income` (1 on income categories), `main_category_pk` (NULL on main categories, set on subcategories), `archived`.
+- `wallets`: `name`, `currency`, `archived`. Both tables also have an `order` column; quote it as `"order"`.
+- `date_created` is unix seconds. Convert it to dates in the phone's timezone: SQLite's `'unixepoch'` and `strftime('%s', 'YYYY-MM-DD')` use UTC, which shifts month boundaries by the UTC offset.
+- An account's balance is the sum of `amount` over its rows where `paid` isn't 0. Rows with `paid` 0 haven't happened yet.
+- Rows with `type` 1 come from a subscription. Their amount is the subscription's set price, which can lag the real charge.
+- Category `'0'` is Balance Correction, and Cashew stores transfers there too: a transfer is two rows, one pointing at the other through `paired_transaction_fk`. Any category-`'0'` row on neither end of such a link is a balance correction. Don't classify by note text: some corrections have an empty note.
+
 ## Bank statements
 
 For a PDF statement, run `pdftotext -layout` and turn the rows into transactions. Skip transfers between the user's own accounts. Confirm, then send in one batch.
