@@ -45,7 +45,7 @@ There is no live read access. Ask for a backup: More → Settings & Customizatio
    - A failed payment and its reversal cancel out. Add both or neither.
 5. Skip money the user moved between their own bank accounts if both belong to the same Cashew account. Otherwise log it as a transfer (see Logging).
 6. Give each new row the title and category the user used before for the same merchant. Ask about merchants you can't place.
-7. Balance corrections the user made while not logging count the same money twice once you add the missing rows. List them for the user to delete, along with any subscription prices to fix. The user makes edits and deletes by hand in the app.
+7. Balance corrections the user made while not logging count the same money twice once you add the missing rows. List them for the user to delete.
 8. Confirm, then send.
 9. Once the user has opened Cashew and made those changes, ask for a fresh backup. On each statement's end date, compare the Cashew account's balance with the bank's, adding up bank accounts that share a Cashew account. Allow for purchases dated on or before that day that the bank posted later. Any other gap points to a missing or doubled row, or a batch that never arrived. Once every statement matches, update the reconciled-through date in the profile.
 
