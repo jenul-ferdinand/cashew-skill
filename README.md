@@ -30,6 +30,12 @@ You need an Android phone with Cashew and [Termux from F-Droid](https://f-droid.
    passwd   # or put your public key in ~/.ssh/authorized_keys
    sshd
    ```
+   sshd doesn't survive a phone restart, and Android may stop Termux in the background. If ssh reports "Connection refused", open Termux and run `sshd` again. To start it at boot, install [Termux:Boot](https://f-droid.org/packages/com.termux.boot/) from F-Droid and open it once. Then run `mkdir -p ~/.termux/boot` and save this script there as `start-sshd`:
+   ```sh
+   #!/data/data/com.termux/files/usr/bin/sh
+   termux-wake-lock
+   sshd
+   ```
 2. On the computer, add the phone to `~/.ssh/config`. To use a different host name, set `CASHEW_SSH_HOST`.
    ```
    Host phone
