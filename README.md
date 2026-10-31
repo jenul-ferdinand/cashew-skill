@@ -22,7 +22,7 @@ Cashew has no API. It does accept [app links](https://cashewapp.web.app/faq.html
 
 ## Setup
 
-You need an Android phone with Cashew and [Termux from F-Droid](https://f-droid.org/packages/com.termux/), plus Python 3 on the computer that runs the agent. To import PDF bank statements, that computer also needs `pdftotext` (`apt install poppler-utils` or `brew install poppler`).
+You need an Android phone with Cashew and [Termux from F-Droid](https://f-droid.org/packages/com.termux/), plus Python 3 on the computer that runs the agent.
 
 1. In Termux, start an SSH server (it listens on port 8022):
    ```sh
