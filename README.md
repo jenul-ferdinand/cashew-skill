@@ -51,6 +51,7 @@ Without SSH, `cashew.py --link` prints a link you can tap on the phone instead.
 ## Tips
 
 - Cashew's Notification Scanning (Settings → Experimental Features) can log your bank's purchase notifications by itself. This skill covers cash, catching up, and statements.
+- For a transfer between your accounts, Cashew opens a pre-filled transfer screen that you save with a tap.
 - Self-check: `python3 cashew.py --test`.
 
 Unofficial and not affiliated with Cashew. MIT licensed.
