@@ -5,7 +5,7 @@ description: Log expenses and income into the Cashew budgeting app (Android) fro
 
 # Cashew
 
-[Cashew](https://github.com/jameskokoska/Cashew) has no API. `cashew.py` (in this skill's directory) queues transactions through its app-link broadcast receiver over SSH to Termux on the phone. The SSH host is `$CASHEW_SSH_HOST`, default `phone`. Cashew adds the queued transactions the next time it's opened.
+[Cashew](https://github.com/jameskokoska/Cashew) has no API. `cashew.py` (in this skill's directory) queues transactions through its app-link broadcast receiver over SSH to Termux on the phone. The SSH host is `$CASHEW_SSH_HOST`, default `phone`. Cashew adds the queued transactions the next time it's opened. App links can't edit or delete transactions. For edits and deletions, give the user a checklist to work through in Cashew (date, amount, title, and what to change).
 
 ## Before logging
 
