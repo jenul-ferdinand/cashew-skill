@@ -106,7 +106,7 @@ def notification(text: str) -> str:
     timeout, and its helper outlives that, holding ssh open ~50s unless its
     output goes to /dev/null.
     """
-    tap = f"termux-notification-remove cashew; am start -n {ACTIVITY}"
+    tap = f"am start -n {ACTIVITY}"  # Termux:API auto-cancels it on tap
     cmd = ["timeout", "10", "termux-notification", "--id", "cashew"]
     cmd += ["--title", "Cashew", "--content", text, "--action", tap]
     return shlex.join(cmd) + " >/dev/null 2>&1"
@@ -205,9 +205,8 @@ def main() -> None:
     print(done)
     # after every batch, so one send posts one notification
     if code := ssh(notification(done)).returncode:
-        why = "ssh dropped" if code == 255 else "is the Termux:API app missing?"
         print(
-            f"No notification on the phone ({why}). It needs the Termux:API "
+            f"No notification on the phone (exit {code}). It needs the Termux:API "
             "app from where you got Termux, and `pkg install termux-api`.",
             file=sys.stderr,
         )
