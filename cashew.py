@@ -8,7 +8,8 @@ stdin: a JSON list, amount < 0 for expenses and > 0 for income, e.g.
 A row with "to" is a transfer from "account" (amount > 0, no category), e.g.
   {"date": "2026-10-21", "amount": 200, "account": "Everyday", "to": "Savings"}
 
-  cashew.py          send to the phone (ssh host $CASHEW_SSH_HOST or "phone")
+  cashew.py          send to the phone (ssh host $CASHEW_SSH_HOST or "phone"),
+                     then post a notification there that opens Cashew
   cashew.py --link   print app links to tap on the phone instead (no ssh)
   cashew.py --test   self-check
 """
@@ -26,6 +27,7 @@ from urllib.parse import quote, unquote, urlencode
 BASE = "https://cashewapp.web.app/addTransaction?JSON="
 TRANSFER = "https://cashewapp.web.app/addTransferRoute?"
 RECEIVER = "com.budget.tracker_app/com.budget.tracker_app.UriReceiver"
+ACTIVITY = "com.budget.tracker_app/.MainActivity"
 HOST = os.environ.get("CASHEW_SSH_HOST", "phone")
 # ~20KB/link, far below Linux's 128KB per-argument cap, lower iff notes run long
 BATCH = 50
@@ -96,6 +98,25 @@ def app_links(txns: list[Transaction]) -> list[str]:
     ] + [TRANSFER + urlencode(p, quote_via=quote) for p in transfers]
 
 
+def notification(text: str) -> str:
+    """Termux command for one notification that opens Cashew when tapped.
+
+    The fixed id makes a later send replace it instead of stacking another.
+    termux-notification hangs when the Termux:API app is missing, hence the
+    timeout, and its helper outlives that, holding ssh open ~50s unless its
+    output goes to /dev/null.
+    """
+    tap = f"am start -n {ACTIVITY}"  # Termux:API auto-cancels it on tap
+    cmd = ["timeout", "10", "termux-notification", "--id", "cashew"]
+    cmd += ["--title", "Cashew", "--content", text, "--action", tap]
+    return shlex.join(cmd) + " >/dev/null 2>&1"
+
+
+def ssh(remote: str) -> subprocess.CompletedProcess:
+    cmd = ["ssh", "-o", "ConnectTimeout=8", HOST, remote]
+    return subprocess.run(cmd, capture_output=True, text=True)
+
+
 def test() -> None:
     raw = {
         "date": "2026-10-21T12:30",
@@ -146,6 +167,11 @@ def test() -> None:
             pass
         else:
             raise AssertionError(f"accepted {b}")
+    text = "Queued 2 transaction(s). It's Bob's."
+    note = shlex.split(notification(text))
+    assert note[:3] == ["timeout", "10", "termux-notification"]
+    assert note[3:5] == ["--id", "cashew"] and text in note
+    assert note[-3:] == [f"am start -n {ACTIVITY}", ">/dev/null", "2>&1"]
     print("ok")
 
 
@@ -165,9 +191,7 @@ def main() -> None:
         print(*urls, sep="\n")
         return
     for i, url in enumerate(urls, 1):
-        remote = shlex.join(["am", "broadcast", "-n", RECEIVER, "-d", url])
-        ssh = ["ssh", "-o", "ConnectTimeout=8", HOST, remote]
-        result = subprocess.run(ssh, capture_output=True, text=True)
+        result = ssh(shlex.join(["am", "broadcast", "-n", RECEIVER, "-d", url]))
         if result.returncode:
             error = result.stderr or result.stdout
             sys.exit(
@@ -175,7 +199,15 @@ def main() -> None:
                 f"earlier batches were queued:\n{error}"
             )
     save = ", and save each transfer screen" if any(t.to for t in txns) else ""
-    print(f"Queued {len(txns)} transaction(s). Open Cashew to add them{save}.")
+    done = f"Queued {len(txns)} transaction(s). Open Cashew to add them{save}."
+    print(done)
+    # after every batch, so one send posts one notification
+    if code := ssh(notification(done)).returncode:
+        print(
+            f"No notification (exit {code}). It needs the Termux:API app from "
+            "where you got Termux, and `pkg install termux-api`.",
+            file=sys.stderr,
+        )
 
 
 if __name__ == "__main__":

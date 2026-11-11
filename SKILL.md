@@ -29,7 +29,7 @@ If a quick log needs a name the profile lacks, ask the user and save the answer 
    [{"date": "2026-10-21", "amount": -12.5, "title": "Subway", "category": "Dining"}]
    EOF
    ```
-4. Tell the user to open Cashew to process them. Cashew opens each transfer on a pre-filled screen, and they save it with a tap.
+4. Tell the user to open Cashew to process them, or tap the notification `cashew.py` posts on the phone. Cashew opens each transfer on a pre-filled screen, and they save it with a tap.
 
 If ssh fails, the phone may be off the network, its IP may have changed, or sshd isn't running (open Termux, run `sshd`). Use `--link` instead and give the user the link to tap on the phone.
 
