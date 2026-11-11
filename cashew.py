@@ -170,10 +170,8 @@ def test() -> None:
     text = "Queued 2 transaction(s). It's Bob's."
     note = shlex.split(notification(text))
     assert note[:3] == ["timeout", "10", "termux-notification"]
-    assert note[-2:] == [">/dev/null", "2>&1"]
-    flags = dict(zip(note[3:-2:2], note[4:-2:2]))
-    assert flags["--id"] == "cashew" and flags["--content"] == text
-    assert flags["--action"].endswith(f"am start -n {ACTIVITY}")
+    assert note[3:5] == ["--id", "cashew"] and text in note
+    assert note[-3:] == [f"am start -n {ACTIVITY}", ">/dev/null", "2>&1"]
     print("ok")
 
 
@@ -206,8 +204,8 @@ def main() -> None:
     # after every batch, so one send posts one notification
     if code := ssh(notification(done)).returncode:
         print(
-            f"No notification on the phone (exit {code}). It needs the Termux:API "
-            "app from where you got Termux, and `pkg install termux-api`.",
+            f"No notification (exit {code}). It needs the Termux:API app from "
+            "where you got Termux, and `pkg install termux-api`.",
             file=sys.stderr,
         )
 
