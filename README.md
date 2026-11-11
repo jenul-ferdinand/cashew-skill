@@ -50,7 +50,8 @@ You need an Android phone with Cashew and [Termux from F-Droid](https://f-droid.
    ```
    /plugin install cashew-skill --marketplace jenul-ferdinand/skills
    ```
-4. Tell the agent your Cashew category names. Or export a backup (More → Settings & Customization → Import & Export Data → Export Cashew Data File) and let it read them. It keeps them in `~/.config/cashew-skill/profile.md`.
+4. Optional: install [Termux:API from F-Droid](https://f-droid.org/packages/com.termux.api/) (it must come from the same place as Termux), then run `pkg install termux-api` in Termux. After each send, the phone then shows a notification that opens Cashew when tapped.
+5. Tell the agent your Cashew category names. Or export a backup (More → Settings & Customization → Import & Export Data → Export Cashew Data File) and let it read them. It keeps them in `~/.config/cashew-skill/profile.md`.
 
 Without SSH, `cashew.py --link` prints a link you can tap on the phone instead.
 
